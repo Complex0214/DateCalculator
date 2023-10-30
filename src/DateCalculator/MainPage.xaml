@@ -22,7 +22,7 @@
                     Text="西元"
                     FontSize="Large"
                     SemanticProperties.Hint="西元年表示"
-                    Clicked="OnCounterClicked"
+                    Clicked="OnADBtnClicked"
                     HorizontalOptions="Center" />
                 <Button
                     Grid.Column="1"
@@ -74,7 +74,8 @@
                     FontSize="Large"
                     SemanticProperties.Hint="相差"
                     Clicked="OnCounterClicked"
-                    HorizontalOptions="Center" />
+                    HorizontalOptions="Center"
+                    Padding="26,0"/>
                 <Entry
                     Grid.Row="1"
                     x:Name="YearEntry"
@@ -98,13 +99,12 @@
                     Placeholder="日"
                     HorizontalTextAlignment="Center"
                     Margin="20" />
-                <DatePicker
+                <Label
                     Grid.Row="2"
                     Grid.ColumnSpan="3"
-                    x:Name="ResultDatePicker"
-                    FontSize="24"
+                    x:Name="ResultLabel"
+                    FontSize="Large"
                     HorizontalOptions="Center"
-                    Format="yyyy 年 MM 月 dd 日"
                     Margin="20" />
             </Grid>
             <Button
