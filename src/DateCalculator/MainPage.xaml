@@ -8,33 +8,111 @@
             Spacing="25"
             Padding="30,0"
             VerticalOptions="Center">
-
-            <Image
-                Source="dotnet_bot.png"
-                SemanticProperties.Description="Cute dot net bot waving hi to you!"
-                HeightRequest="200"
-                HorizontalOptions="Center" />
-
-            <Label
-                Text="Hello, World!"
-                SemanticProperties.HeadingLevel="Level1"
-                FontSize="32"
-                HorizontalOptions="Center" />
-
-            <Label
-                Text="Welcome to .NET Multi-platform App UI"
-                SemanticProperties.HeadingLevel="Level2"
-                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
-                FontSize="18"
-                HorizontalOptions="Center" />
-
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Button
+                    x:Name="ADBtn"
+                    Text="西元"
+                    FontSize="Large"
+                    SemanticProperties.Hint="西元年表示"
+                    Clicked="OnCounterClicked"
+                    HorizontalOptions="Center" />
+                <Button
+                    Grid.Column="1"
+                    x:Name="TWBtn"
+                    Text="民國"
+                    FontSize="Large"
+                    SemanticProperties.Hint="民國年表示"
+                    Clicked="OnCounterClicked"
+                    HorizontalOptions="Center" />
+                <DatePicker
+                    Grid.Row="1"
+                    Grid.ColumnSpan="2"
+                    x:Name="DateSelectDatePicker"
+                    FontSize="24"
+                    HorizontalOptions="Center"
+                    Format="yyyy 年 MM 月 dd 日"
+                    Margin="20" />
+            </Grid>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Button
+                    x:Name="FrontBtn"
+                    Text="往前算"
+                    FontSize="Large"
+                    SemanticProperties.Hint="往前算"
+                    Clicked="OnCounterClicked"
+                    HorizontalOptions="Center" />
+                <Button
+                    Grid.Column="1"
+                    x:Name="BackBtn"
+                    Text="往後算"
+                    FontSize="Large"
+                    SemanticProperties.Hint="往後算"
+                    Clicked="OnCounterClicked"
+                    HorizontalOptions="Center" />
+                <Button
+                    Grid.Column="2"
+                    x:Name="DiffBtn"
+                    Text="相差"
+                    FontSize="Large"
+                    SemanticProperties.Hint="相差"
+                    Clicked="OnCounterClicked"
+                    HorizontalOptions="Center" />
+                <Entry
+                    Grid.Row="1"
+                    x:Name="YearEntry"
+                    FontSize="Large"
+                    Placeholder="年"
+                    HorizontalTextAlignment="Center"
+                    Margin="20" />
+                <Entry
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    x:Name="MonthEntry"
+                    FontSize="Large"
+                    Placeholder="月"
+                    HorizontalTextAlignment="Center"
+                    Margin="20" />
+                <Entry
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    x:Name="DayEntry"
+                    FontSize="Large"
+                    Placeholder="日"
+                    HorizontalTextAlignment="Center"
+                    Margin="20" />
+                <DatePicker
+                    Grid.Row="2"
+                    Grid.ColumnSpan="3"
+                    x:Name="ResultDatePicker"
+                    FontSize="24"
+                    HorizontalOptions="Center"
+                    Format="yyyy 年 MM 月 dd 日"
+                    Margin="20" />
+            </Grid>
             <Button
-                x:Name="CounterBtn"
-                Text="Click me"
-                SemanticProperties.Hint="Counts the number of times you click"
-                Clicked="OnCounterClicked"
-                HorizontalOptions="Center" />
-
+                x:Name="ClearBtn"
+                BackgroundColor="#FF5151"
+                Text="重算"
+                FontSize="Large"
+                SemanticProperties.Hint="重算" />
         </VerticalStackLayout>
     </ScrollView>
 
