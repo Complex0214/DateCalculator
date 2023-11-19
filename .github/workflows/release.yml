@@ -28,8 +28,8 @@ jobs:
       - name: Build
         shell: bash
         run: |
-          tag=$(git describe --tags --abbrev=0)
-          release_name="DateCalculator-$tag-${{ matrix.target }}"
+          # tag=$(git describe --tags --abbrev=0)
+          release_name="DateCalculator-xxx-${{ matrix.target }}"
 
           # Prepare keystore
           if [ "${{ matrix.target }}" == "win-x64" ]; then
