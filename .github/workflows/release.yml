@@ -41,7 +41,7 @@ jobs:
             CertUtil -decode src/DateCalculator/release.pfx.encoded src/DateCalculator/release.pfx
 
             # Import pfx certificate
-            CertUtil -f -user -p ${{ secrets.RELEASE_PFX_PASS }} -importpfx "src/DateCalculator/release.pfx"
+            CertUtil -f -p ${{ secrets.RELEASE_PFX_PASS }} -importpfx "src/DateCalculator/release.pfx"
           fi
 
           # Build everything
