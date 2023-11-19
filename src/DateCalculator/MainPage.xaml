@@ -22,7 +22,7 @@
                     Text="西元"
                     FontSize="Large"
                     SemanticProperties.Hint="西元年表示"
-                    Clicked="OnCounterClicked"
+                    Clicked="OnADBtnClicked"
                     HorizontalOptions="Center" />
                 <Button
                     Grid.Column="1"
@@ -30,7 +30,7 @@
                     Text="民國"
                     FontSize="Large"
                     SemanticProperties.Hint="民國年表示"
-                    Clicked="OnCounterClicked"
+                    Clicked="OnTWBtnClicked"
                     HorizontalOptions="Center" />
                 <DatePicker
                     Grid.Row="1"
@@ -46,6 +46,7 @@
                     <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
@@ -57,7 +58,7 @@
                     Text="往前算"
                     FontSize="Large"
                     SemanticProperties.Hint="往前算"
-                    Clicked="OnCounterClicked"
+                    Clicked="OnFrontBtnClicked"
                     HorizontalOptions="Center" />
                 <Button
                     Grid.Column="1"
@@ -65,7 +66,7 @@
                     Text="往後算"
                     FontSize="Large"
                     SemanticProperties.Hint="往後算"
-                    Clicked="OnCounterClicked"
+                    Clicked="OnBackBtnClicked"
                     HorizontalOptions="Center" />
                 <Button
                     Grid.Column="2"
@@ -73,14 +74,16 @@
                     Text="相差"
                     FontSize="Large"
                     SemanticProperties.Hint="相差"
-                    Clicked="OnCounterClicked"
-                    HorizontalOptions="Center" />
+                    Clicked="OnDiffBtnClicked"
+                    HorizontalOptions="Center"
+                    Padding="26,0"/>
                 <Entry
                     Grid.Row="1"
                     x:Name="YearEntry"
                     FontSize="Large"
                     Placeholder="年"
                     HorizontalTextAlignment="Center"
+                    Keyboard="Numeric"
                     Margin="20" />
                 <Entry
                     Grid.Row="1"
@@ -89,6 +92,7 @@
                     FontSize="Large"
                     Placeholder="月"
                     HorizontalTextAlignment="Center"
+                    Keyboard="Numeric"
                     Margin="20" />
                 <Entry
                     Grid.Row="1"
@@ -97,21 +101,37 @@
                     FontSize="Large"
                     Placeholder="日"
                     HorizontalTextAlignment="Center"
+                    Keyboard="Numeric"
                     Margin="20" />
                 <DatePicker
                     Grid.Row="2"
                     Grid.ColumnSpan="3"
-                    x:Name="ResultDatePicker"
+                    x:Name="DateDiffDatePicker"
                     FontSize="24"
                     HorizontalOptions="Center"
                     Format="yyyy 年 MM 月 dd 日"
+                    Margin="20" 
+                    IsVisible="false"/>
+                <Label
+                    Grid.Row="3"
+                    Grid.ColumnSpan="3"
+                    x:Name="ResultLabel"
+                    FontSize="Large"
+                    HorizontalOptions="Center"
                     Margin="20" />
             </Grid>
+            <Button
+                x:Name="CalculateBtn"
+                Text="計算"
+                FontSize="Large"
+                Clicked="OnCalculateBtnClicked"
+                SemanticProperties.Hint="重算" />
             <Button
                 x:Name="ClearBtn"
                 BackgroundColor="#FF5151"
                 Text="重算"
                 FontSize="Large"
+                Clicked="OnClearBtnClicked"
                 SemanticProperties.Hint="重算" />
         </VerticalStackLayout>
     </ScrollView>
