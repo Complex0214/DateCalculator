@@ -41,7 +41,7 @@ jobs:
             CertUtil -decode src/DateCalculator/release.pfx.encoded src/DateCalculator/release.pfx
 
             # Import pfx certificate
-            pwd = ConvertTo-SecureString -String ${{ secrets.RELEASE_PFX_PASS }} -Force -AsPlainText; Import-PfxCertificate -FilePath "src/DateCalculator/release.pfx" -CertStoreLocation "Cert:\CurrentUser\My" -Password pwd
+            CertUtil -f -p ${{ secrets.RELEASE_PFX_PASS }} -importpfx "src/DateCalculator/release.pfx"
           fi
 
           # Build everything
