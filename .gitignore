@@ -239,7 +239,7 @@ ClientBin/
 *.dbmdl
 *.dbproj.schemaview
 *.jfm
-*.pfx
+*.pfx*
 *.publishsettings
 orleans.codegen.cs
 
@@ -478,3 +478,6 @@ $RECYCLE.BIN/
 
 # Rider
 **/.idea/**
+
+# Andriod used keystore
+*.keystore*

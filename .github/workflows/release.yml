@@ -1,0 +1,73 @@
+name: Publish .NET MAUI
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  release:
+    name: Release
+    strategy:
+      matrix:
+        kind: ["windows"]
+        include:
+          - kind: windows
+            os: windows-latest
+            target: win-x64
+        dotnet-version: ["8.0.x"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK ${{ matrix.dotnet-version }}
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+
+      - name: Prepare keystore and pfx file
+        shell: bash
+        run: |
+          if [ "${{ matrix.target }}" == "win-x64" ]; then
+            # Prepare keystore
+            echo "${{ secrets.RELEASE_KEYSTORE }}" > src/DateCalculator/release.keystore.encoded
+            CertUtil -decode src/DateCalculator/release.keystore.encoded src/DateCalculator/release.keystore
+            
+            # Prepare pfx
+            echo "${{ secrets.RELEASE_PFX }}" > src/DateCalculator/release.pfx.encoded
+            CertUtil -decode src/DateCalculator/release.pfx.encoded src/DateCalculator/release.pfx
+
+            # Import pfx
+            CertUtil -user -q -p ${{ secrets.RELEASE_PFX_PASS }} -importpfx "src/DateCalculator/release.pfx" NoRoot
+          fi
+
+      - name: Build
+        shell: bash
+        run: |
+          tag=$(git describe --tags --abbrev=0)
+          release_name="DateCalculator-$tag"
+          release_windows_name="${release_name}-windows"
+          release_android_name="${release_name}-android"
+
+          # Build everything
+          dotnet workload restore src/DateCalculator/DateCalculator.csproj
+          dotnet publish src/DateCalculator/DateCalculator.csproj -f net8.0-windows10.0.19041.0 -c Release -o "$release_windows_name" -p:RuntimeIdentifierOverride=win10-x64
+          dotnet publish src/DateCalculator/DateCalculator.csproj -f net8.0-android -c Release -o "$release_android_name" -p:AndroidSigningKeyPass=${{ secrets.RELEASE_KEYSTORE_PASS }} -p:AndroidSigningStorePass=${{ secrets.RELEASE_KEYSTORE_PASS }}
+
+          # Pack files
+          if [ "${{ matrix.target }}" == "win-x64" ]; then
+            # Pack to zip for Windows
+            7z a -tzip "${release_windows_name}.zip" "src/DateCalculator/bin/Release/net8.0-windows10.0.19041.0/win10-x64/AppPackages/*"
+            7z a -tzip "${release_android_name}.zip" "./${release_android_name}/*"
+          fi
+
+          # Delete output directory
+          rm -r "$release_windows_name"
+          rm -r "$release_android_name"
+
+      - name: Publish
+        uses: softprops/action-gh-release@v1
+        with:
+          files: "DateCalculator*"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
