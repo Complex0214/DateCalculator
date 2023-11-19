@@ -56,8 +56,9 @@ jobs:
 
           # Pack files
           if [ "${{ matrix.target }}" == "win-x64" ]; then
+            xcopy /s /e /y "src/DateCalculator/bin/Release/net8.0-windows10.0.19041.0/win10-x64/AppPackages" "./$release_windows_name"
             # Pack to zip for Windows
-            7z a -tzip "${release_windows_name}.zip" "src/DateCalculator/bin/Release/net8.0-windows10.0.19041.0/win10-x64/AppPackages/*"
+            7z a -tzip "${release_windows_name}.zip" "./${release_windows_name}/*"
             7z a -tzip "${release_android_name}.zip" "./${release_android_name}/*"
           fi
 
