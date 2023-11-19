@@ -25,6 +25,22 @@ jobs:
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
 
+      - name: Prepare keystore and pfx file
+        shell: bash
+        run: |
+          if [ "${{ matrix.target }}" == "win-x64" ]; then
+            # Prepare keystore
+            echo "${{ secrets.RELEASE_KEYSTORE }}" > src/DateCalculator/release.keystore.encoded
+            CertUtil -decode src/DateCalculator/release.keystore.encoded src/DateCalculator/release.keystore
+            
+            # Prepare pfx
+            echo "${{ secrets.RELEASE_PFX }}" > src/DateCalculator/release.pfx.encoded
+            CertUtil -decode src/DateCalculator/release.pfx.encoded src/DateCalculator/release.pfx
+
+            # Import pfx
+            CertUtil -user -q -p ${{ secrets.RELEASE_PFX_PASS }} -importpfx "src/DateCalculator/release.pfx" NoRoot
+          fi
+
       - name: Build
         shell: bash
         run: |
@@ -32,17 +48,6 @@ jobs:
           release_name="DateCalculator-$tag"
           release_windows_name="${release_name}-windows"
           release_android_name="${release_name}-android"
-
-          # Prepare keystore and pfx certificate
-          if [ "${{ matrix.target }}" == "win-x64" ]; then
-            echo "${{ secrets.RELEASE_KEYSTORE }}" > src/DateCalculator/release.keystore.encoded
-            CertUtil -decode src/DateCalculator/release.keystore.encoded src/DateCalculator/release.keystore
-            echo "${{ secrets.RELEASE_PFX }}" > src/DateCalculator/release.pfx.encoded
-            CertUtil -decode src/DateCalculator/release.pfx.encoded src/DateCalculator/release.pfx
-
-            # Import pfx certificate
-            CertUtil -f -p ${{ secrets.RELEASE_PFX_PASS }} -importpfx "src/DateCalculator/release.pfx"
-          fi
 
           # Build everything
           dotnet workload restore src/DateCalculator/DateCalculator.csproj
