@@ -12,10 +12,10 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 
 		<!-- Display name -->
-		<ApplicationTitle>DateCalculator</ApplicationTitle>
+		<ApplicationTitle>Date Calculator</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.datecalculator</ApplicationId>
+		<ApplicationId>com.light-design.date-calculator</ApplicationId>
 		<ApplicationIdGuid>0e8c9f16-7419-4927-9b51-a8feb43f963c</ApplicationIdGuid>
 
 		<!-- Versions -->
