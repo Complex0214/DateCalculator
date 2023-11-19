@@ -74,6 +74,10 @@ namespace DateCalculator
             BackBtn.BackgroundColor = defaultBackBtnBackgroundColor;
             DiffBtn.BackgroundColor = toggledBackgroundColor;
 
+            YearEntry.Text = null;
+            MonthEntry.Text = null;
+            DayEntry.Text = null;
+
             YearEntry.IsVisible = false;
             MonthEntry.IsVisible = false;
             DayEntry.IsVisible = false;
@@ -82,7 +86,7 @@ namespace DateCalculator
 
         private void OnCalculateBtnClicked(object sender, EventArgs e)
         {
-            string result;
+            string result = string.Empty;
 
             if (isCalculateDays)
             {
@@ -90,10 +94,45 @@ namespace DateCalculator
             } 
             else
             {
-                result = CalculateDate();
+                if (IsInputField() && IsValidType())
+                {
+                    result = CalculateDate();
+                }             
             }
 
             ResultLabel.Text = result;
+        }
+
+        private bool IsInputField()
+        {
+            bool isValid = false;
+
+            if (!string.IsNullOrEmpty(YearEntry.Text) || !string.IsNullOrEmpty(MonthEntry.Text) || !string.IsNullOrEmpty(DayEntry.Text))
+            {
+                isValid = true;
+            }
+            else
+            {
+                DisplayAlert("錯誤", "年月日至少輸入一項!!", "確定");
+            }
+
+            return isValid;           
+        }
+
+        private bool IsValidType()
+        {
+            bool isType = false;
+
+            if (int.TryParse(YearEntry.Text, out _) || int.TryParse(MonthEntry.Text, out _) || int.TryParse(DayEntry.Text, out _))
+            {
+                isType = true;    
+            }
+            else
+            {
+                DisplayAlert("錯誤", "年月日只能輸入數字!!", "確定");
+            }
+
+            return isType;
         }
 
         private void OnClearBtnClicked(object sender, EventArgs e)
@@ -106,6 +145,7 @@ namespace DateCalculator
             isTwYear = false;
             isCalculateDays = false;
             isFront = false;
+
             defaultADBtnBackgroundColor = ADBtn.BackgroundColor;
             defaultTWBtnBackgroundColor = TWBtn.BackgroundColor;
             defaultFrontBtnBackgroundColor = FrontBtn.BackgroundColor;
@@ -128,20 +168,13 @@ namespace DateCalculator
             var month = MonthEntry.Text;
             var day = DayEntry.Text;
 
-            if (!string.IsNullOrEmpty(year))
-            {
-                now = now.AddYears(isFront ? -Convert.ToInt16(year) : Convert.ToInt16(year));
-            }
+            var yearsToAdd = ParseInput(year);
+            var monthsToAdd = ParseInput(month);
+            var daysToAdd = ParseInput(day);
 
-            if (!string.IsNullOrEmpty(month))
-            {
-                now = now.AddMonths(isFront ? -Convert.ToInt16(month) : Convert.ToInt16(month));
-            }
-
-            if (!string.IsNullOrEmpty(day))
-            {
-                now = now.AddDays(isFront ? -Convert.ToInt16(day) : Convert.ToInt16(day));
-            }
+            now = now.AddYears(isFront ? -yearsToAdd : yearsToAdd);
+            now = now.AddMonths(isFront ? -monthsToAdd : monthsToAdd);
+            now = now.AddDays(isFront ? -daysToAdd : daysToAdd);
 
             if (isTwYear)
             {
@@ -151,6 +184,11 @@ namespace DateCalculator
             }
 
             return $"{now:yyyy 年 MM 月 dd 日}";
+        }
+
+        private int ParseInput(string input)
+        {
+            return string.IsNullOrEmpty(input) ? 0 : Convert.ToInt32(input);
         }
 
         private void Reset()
@@ -166,15 +204,22 @@ namespace DateCalculator
         {
             DateSelectDatePicker.Date = DateTime.Now;
             DateDiffDatePicker.Date = DateTime.Now;
+
             ADBtn.BackgroundColor = defaultADBtnBackgroundColor;
             TWBtn.BackgroundColor = defaultTWBtnBackgroundColor;
             FrontBtn.BackgroundColor = defaultFrontBtnBackgroundColor;
             BackBtn.BackgroundColor = defaultBackBtnBackgroundColor;
             DiffBtn.BackgroundColor = defaultDiffBtnBackgroundColor;
+
             YearEntry.Text = null;
             MonthEntry.Text = null;
             DayEntry.Text = null;
             ResultLabel.Text = null;
+
+            YearEntry.IsVisible = true;
+            MonthEntry.IsVisible = true;
+            DayEntry.IsVisible = true;
+            DateDiffDatePicker.IsVisible = false;
         }
     }
 }
