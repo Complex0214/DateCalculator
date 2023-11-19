@@ -39,11 +39,14 @@ jobs:
             CertUtil -decode src/DateCalculator/release.keystore.encoded src/DateCalculator/release.keystore
             echo "${{ secrets.RELEASE_PFX }}" > src/DateCalculator/release.pfx.encoded
             CertUtil -decode src/DateCalculator/release.pfx.encoded src/DateCalculator/release.pfx
+
+            # Import pfx certificate
+            pwd = ConvertTo-SecureString -String ${{ secrets.RELEASE_PFX_PASS }} -Force -AsPlainText; Import-PfxCertificate -FilePath "src/DateCalculator/release.pfx" -CertStoreLocation "Cert:\CurrentUser\My" -Password pwd
           fi
 
           # Build everything
           dotnet workload restore src/DateCalculator/DateCalculator.csproj
-          dotnet publish src/DateCalculator/DateCalculator.csproj -f net8.0-windows10.0.19041.0 -c Release -o "$release_windows_name" -p:RuntimeIdentifierOverride=win10-x64 -p:PackageCertificatePassword=${{ secrets.RELEASE_PFX_PASS }}
+          dotnet publish src/DateCalculator/DateCalculator.csproj -f net8.0-windows10.0.19041.0 -c Release -o "$release_windows_name" -p:RuntimeIdentifierOverride=win10-x64
           dotnet publish src/DateCalculator/DateCalculator.csproj -f net8.0-android -c Release -o "$release_android_name" -p:AndroidSigningKeyPass=${{ secrets.RELEASE_KEYSTORE_PASS }} -p:AndroidSigningStorePass=${{ secrets.RELEASE_KEYSTORE_PASS }}
 
           # Pack files
