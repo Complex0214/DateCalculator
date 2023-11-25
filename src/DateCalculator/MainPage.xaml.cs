@@ -18,6 +18,9 @@ namespace DateCalculator
         {
             InitializeComponent();
             SetDefault();
+
+            if (Application.Current != null) 
+                Application.Current.UserAppTheme = AppTheme.Light;
         }
 
         private void OnADBtnClicked(object sender, EventArgs e)
@@ -220,6 +223,12 @@ namespace DateCalculator
             MonthEntry.IsVisible = true;
             DayEntry.IsVisible = true;
             DateDiffDatePicker.IsVisible = false;
+        }
+
+        private void OnDarkModeToggled(object sender, ToggledEventArgs e)
+        {
+            if (Application.Current != null)
+                Application.Current.UserAppTheme = Application.Current.UserAppTheme is AppTheme.Light ? AppTheme.Dark : AppTheme.Light;
         }
     }
 }
