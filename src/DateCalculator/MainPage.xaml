@@ -9,6 +9,17 @@
             Spacing="25"
             Padding="30,0"
             VerticalOptions="Center">
+            <Picker x:Name="DarkModePicker"
+                Title="選擇模式"
+                SelectedIndexChanged="OnDarkModePickerSelected">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>亮色模式</x:String>
+                        <x:String>暗色模式</x:String>
+                        <x:String>跟隨系統預設</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition />

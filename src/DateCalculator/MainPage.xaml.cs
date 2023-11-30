@@ -225,10 +225,28 @@ namespace DateCalculator
             DateDiffDatePicker.IsVisible = false;
         }
 
-        private void OnDarkModeToggled(object sender, ToggledEventArgs e)
+           // private void OnDarkModeToggled(object sender, ToggledEventArgs e)
+           // {
+           //     if (Application.Current != null)
+           //        Application.Current.UserAppTheme = Application.Current.UserAppTheme is AppTheme.Light ? AppTheme.Dark : AppTheme.Light;
+           // }
+
+        private void OnDarkModePickerSelected(object sender, EventArgs e)
         {
-            if (Application.Current != null)
-                Application.Current.UserAppTheme = Application.Current.UserAppTheme is AppTheme.Light ? AppTheme.Dark : AppTheme.Light;
+            var selectedMode = (sender as Picker).SelectedItem.ToString();
+
+            if (selectedMode == "亮色模式")
+            {
+                Application.Current.UserAppTheme = AppTheme.Light;
+            }
+            else if (selectedMode == "暗色模式")
+            {
+                Application.Current.UserAppTheme = AppTheme.Dark;
+            }
+            else if (selectedMode == "跟隨系統預設")
+            {
+                Application.Current.UserAppTheme = AppTheme.Unspecified;
+            }
         }
     }
 }
