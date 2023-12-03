@@ -1,4 +1,8 @@
 ﻿using System.Globalization;
+using System.Runtime.InteropServices;
+using Microsoft.UI;
+using Microsoft.UI.Xaml.Controls;
+using Windows.Devices.HumanInterfaceDevice;
 
 namespace DateCalculator
 {
@@ -20,13 +24,13 @@ namespace DateCalculator
             SetDefault();
 
             if (Application.Current != null) 
-                Application.Current.UserAppTheme = AppTheme.Light;
+                Application.Current.UserAppTheme = Application.Current.RequestedTheme;      
         }
 
         private void OnADBtnClicked(object sender, EventArgs e)
         {
             isTwYear = false;
-
+            
             ADBtn.BackgroundColor = toggledBackgroundColor;
             TWBtn.BackgroundColor = defaultTWBtnBackgroundColor;
         }
@@ -34,7 +38,7 @@ namespace DateCalculator
         private void OnTWBtnClicked(object sender, EventArgs e)
         {
             isTwYear = true;
-
+            
             ADBtn.BackgroundColor = defaultADBtnBackgroundColor;
             TWBtn.BackgroundColor = toggledBackgroundColor;
         }
@@ -149,11 +153,6 @@ namespace DateCalculator
             isCalculateDays = false;
             isFront = false;
 
-            defaultADBtnBackgroundColor = ADBtn.BackgroundColor;
-            defaultTWBtnBackgroundColor = TWBtn.BackgroundColor;
-            defaultFrontBtnBackgroundColor = FrontBtn.BackgroundColor;
-            defaultBackBtnBackgroundColor = BackBtn.BackgroundColor;
-            defaultDiffBtnBackgroundColor = DiffBtn.BackgroundColor;
             toggledBackgroundColor = Color.FromRgb(255, 82, 82);
         }
 
@@ -208,11 +207,10 @@ namespace DateCalculator
             DateSelectDatePicker.Date = DateTime.Now;
             DateDiffDatePicker.Date = DateTime.Now;
 
-            ADBtn.BackgroundColor = defaultADBtnBackgroundColor;
-            TWBtn.BackgroundColor = defaultTWBtnBackgroundColor;
-            FrontBtn.BackgroundColor = defaultFrontBtnBackgroundColor;
-            BackBtn.BackgroundColor = defaultBackBtnBackgroundColor;
-            DiffBtn.BackgroundColor = defaultDiffBtnBackgroundColor;
+            if(Application.Current.UserAppTheme == AppTheme.Light)
+                LightMode();
+            else
+                DarkMode();
 
             YearEntry.Text = null;
             MonthEntry.Text = null;
@@ -224,29 +222,62 @@ namespace DateCalculator
             DayEntry.IsVisible = true;
             DateDiffDatePicker.IsVisible = false;
         }
-
-           // private void OnDarkModeToggled(object sender, ToggledEventArgs e)
-           // {
-           //     if (Application.Current != null)
-           //        Application.Current.UserAppTheme = Application.Current.UserAppTheme is AppTheme.Light ? AppTheme.Dark : AppTheme.Light;
-           // }
-
-        private void OnDarkModePickerSelected(object sender, EventArgs e)
+        
+        private void OnDarkModeToggled(object sender, ToggledEventArgs e)
         {
-            var selectedMode = (sender as Picker).SelectedItem.ToString();
+            if (Application.Current != null)
+                Application.Current.UserAppTheme = Application.Current.UserAppTheme is AppTheme.Light ? AppTheme.Dark : AppTheme.Light;  
+                            
+            if (Application.Current.UserAppTheme == AppTheme.Light)
+            {
+                LightMode();
+            }
+            else
+            {
+                DarkMode();
+            }
+        }
 
-            if (selectedMode == "亮色模式")
+        private void LightMode()
+        { 
+            var hasLightColor = App.Current.Resources.TryGetValue("Primary", out var color);
+
+            if (hasLightColor)
             {
-                Application.Current.UserAppTheme = AppTheme.Light;
+                var primaryColor = (Color)color;
+                defaultADBtnBackgroundColor = primaryColor;
+                defaultTWBtnBackgroundColor = primaryColor;
+                defaultFrontBtnBackgroundColor = primaryColor;
+                defaultBackBtnBackgroundColor = primaryColor;
+                defaultDiffBtnBackgroundColor = primaryColor;
             }
-            else if (selectedMode == "暗色模式")
+            
+            TWBtn.BackgroundColor = defaultTWBtnBackgroundColor;
+            ADBtn.BackgroundColor = defaultADBtnBackgroundColor;
+            FrontBtn.BackgroundColor = defaultFrontBtnBackgroundColor;
+            BackBtn.BackgroundColor = defaultBackBtnBackgroundColor;
+            DiffBtn.BackgroundColor = defaultDiffBtnBackgroundColor;           
+        }
+
+        private void DarkMode()
+        { 
+            var hasDarkColor = App.Current.Resources.TryGetValue("Secondary", out var color);
+
+            if (hasDarkColor)
             {
-                Application.Current.UserAppTheme = AppTheme.Dark;
+                var secondaryColor = (Color)color;
+                defaultADBtnBackgroundColor = secondaryColor;
+                defaultTWBtnBackgroundColor = secondaryColor;
+                defaultFrontBtnBackgroundColor = secondaryColor;
+                defaultBackBtnBackgroundColor = secondaryColor;
+                defaultDiffBtnBackgroundColor = secondaryColor;
             }
-            else if (selectedMode == "跟隨系統預設")
-            {
-                Application.Current.UserAppTheme = AppTheme.Unspecified;
-            }
+
+            TWBtn.BackgroundColor = defaultTWBtnBackgroundColor;
+            ADBtn.BackgroundColor = defaultADBtnBackgroundColor;
+            FrontBtn.BackgroundColor = defaultFrontBtnBackgroundColor;
+            BackBtn.BackgroundColor = defaultBackBtnBackgroundColor;
+            DiffBtn.BackgroundColor = defaultDiffBtnBackgroundColor; 
         }
     }
 }
