@@ -24,7 +24,16 @@ namespace DateCalculator
             SetDefault();
 
             if (Application.Current != null) 
-                Application.Current.UserAppTheme = Application.Current.RequestedTheme;      
+                Application.Current.UserAppTheme = Application.Current.RequestedTheme;
+
+            if (Application.Current.RequestedTheme == AppTheme.Light)
+            {
+                DarkModeSwitch.IsToggled = false;
+            }
+            else
+            {
+                DarkModeSwitch.IsToggled = true;
+            }
         }
 
         private void OnADBtnClicked(object sender, EventArgs e)
@@ -226,8 +235,17 @@ namespace DateCalculator
         private void OnDarkModeToggled(object sender, ToggledEventArgs e)
         {
             if (Application.Current != null)
-                Application.Current.UserAppTheme = Application.Current.UserAppTheme is AppTheme.Light ? AppTheme.Dark : AppTheme.Light;  
-                            
+                Application.Current.UserAppTheme = Application.Current.RequestedTheme is AppTheme.Light ? AppTheme.Dark : AppTheme.Light;
+
+            if (DarkModeSwitch.IsToggled)
+            {
+                Application.Current.UserAppTheme = AppTheme.Dark;
+            }
+            else
+            {
+                Application.Current.UserAppTheme = AppTheme.Light;
+            }
+
             if (Application.Current.UserAppTheme == AppTheme.Light)
             {
                 LightMode();
