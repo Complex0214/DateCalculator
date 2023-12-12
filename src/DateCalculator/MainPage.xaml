@@ -9,6 +9,11 @@
             Spacing="25"
             Padding="30,0"
             VerticalOptions="Center">
+            <Switch
+                x:Name="DarkModeSwitch"
+                Toggled="OnDarkModeToggled"
+                HorizontalOptions="End">
+            </Switch>
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition />
@@ -39,7 +44,7 @@
                     x:Name="DateSelectDatePicker"
                     FontSize="24"
                     HorizontalOptions="Center"
-                    Format="yyyy 年 MM 月 dd 日"
+                    Format="yyyy / MM / dd "
                     Margin="20" />
             </Grid>
             <Grid>
@@ -110,7 +115,7 @@
                     x:Name="DateDiffDatePicker"
                     FontSize="24"
                     HorizontalOptions="Center"
-                    Format="yyyy 年 MM 月 dd 日"
+                    Format="yyyy / MM / dd "
                     Margin="20" 
                     IsVisible="false"/>
                 <Label
@@ -129,7 +134,7 @@
                 SemanticProperties.Hint="重算" />
             <Button
                 x:Name="ClearBtn"
-                BackgroundColor="#FF5151"
+                BackgroundColor="{StaticResource Red}"
                 Text="重算"
                 FontSize="Large"
                 Clicked="OnClearBtnClicked"
