@@ -141,7 +141,7 @@ namespace DateCalculator
 
             if (int.TryParse(YearEntry.Text, out _) || int.TryParse(MonthEntry.Text, out _) || int.TryParse(DayEntry.Text, out _))
             {
-                isType = true;    
+                isType = true;
             }
             else
             {
@@ -274,7 +274,9 @@ namespace DateCalculator
             ADBtn.BackgroundColor = defaultADBtnBackgroundColor;
             FrontBtn.BackgroundColor = defaultFrontBtnBackgroundColor;
             BackBtn.BackgroundColor = defaultBackBtnBackgroundColor;
-            DiffBtn.BackgroundColor = defaultDiffBtnBackgroundColor;           
+            DiffBtn.BackgroundColor = defaultDiffBtnBackgroundColor;
+            DateSelectDatePicker.TextColor = defaultDiffBtnBackgroundColor;
+            DateDiffDatePicker.TextColor = defaultDiffBtnBackgroundColor;            
         }
 
         private void DarkMode()
@@ -295,7 +297,9 @@ namespace DateCalculator
             ADBtn.BackgroundColor = defaultADBtnBackgroundColor;
             FrontBtn.BackgroundColor = defaultFrontBtnBackgroundColor;
             BackBtn.BackgroundColor = defaultBackBtnBackgroundColor;
-            DiffBtn.BackgroundColor = defaultDiffBtnBackgroundColor; 
+            DiffBtn.BackgroundColor = defaultDiffBtnBackgroundColor;
+            DateSelectDatePicker.TextColor = defaultDiffBtnBackgroundColor;
+            DateDiffDatePicker.TextColor = defaultDiffBtnBackgroundColor; 
         }
     }
 }
